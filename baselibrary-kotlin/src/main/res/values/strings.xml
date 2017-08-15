@@ -1,0 +1,5 @@
+<resources>
+    <string name="button_cancel">取消</string>
+    <string name="button_ok">确定</string>
+    <string name="button_complete">完成</string>
+</resources>
