@@ -3,6 +3,9 @@ package com.minicart.android.baselibrary.rxjava;
 
 import android.support.annotation.NonNull;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.reactivex.Flowable;
 import io.reactivex.processors.FlowableProcessor;
 import io.reactivex.processors.PublishProcessor;
@@ -26,6 +29,15 @@ public class RxBus {
         return RxBusInstance.INSTANCE;
     }
 
+    public static synchronized RxBus getBus(Class clazz) {
+        RxBus rxBus = RxBusInstance.CLASS_MAP.get(clazz);
+        if (rxBus == null) {
+            rxBus = new RxBus();
+            RxBusInstance.CLASS_MAP.put(clazz, rxBus);
+        }
+        return rxBus;
+    }
+
     public synchronized <T extends IRxBusEvent> Flowable<T> getClassSubject(Class<T> eventType) {
         return bus.ofType(eventType);
     }
@@ -38,6 +50,7 @@ public class RxBus {
 
     private static class RxBusInstance {
         private static final RxBus INSTANCE = new RxBus();
+        private static final Map<Class, RxBus> CLASS_MAP = new HashMap<>();
     }
 
 }
