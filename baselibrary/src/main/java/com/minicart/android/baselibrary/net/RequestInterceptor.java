@@ -55,14 +55,18 @@ public class RequestInterceptor implements Interceptor {
 
         //打印请求信息
         Timber.tag(getTag(request, "Request_Info"))
-                .w("Params : 「 %s 」%nConnection : 「 %s 」%nHeaders : %n「 %s 」"
-                        , hasRequestBody ? parseParams(request.newBuilder().build().body()) : "Null"
-                        , chain.connection()
-                        , request.headers());
+                .w("「 %s 」%nParams : 「 %s 」%nConnection : 「 %s 」%nHeaders : %n「 %s 」",
+                        request.url(),
+                        hasRequestBody ? parseParams(request.newBuilder().build().body()) : "Null",
+                        chain.connection(),
+                        request.headers());
 
         //打印响应时间以及响应头
-        Timber.tag(getTag(request, "Response_Info")).w("Received response in [ %d-ms ] , [ %s ]%n%s"
-                , TimeUnit.NANOSECONDS.toMillis(t2 - t1), bodySize, originalResponse.headers());
+        Timber.tag(getTag(request, "Response_Info")).w("「 %s 」%nReceived response in [ %d-ms ] , [ %s ]%n%s",
+                request.url(),
+                TimeUnit.NANOSECONDS.toMillis(t2 - t1),
+                bodySize,
+                originalResponse.headers());
         //打印响应结果
         String bodyString = printResult(request, originalResponse);
         if (mHandler != null) {//这里可以比客户端提前一步拿到服务器返回的结果,可以做一些操作,比如token超时,重新获取
@@ -98,16 +102,21 @@ public class RequestInterceptor implements Interceptor {
             //解析response content
             bodyString = parseContent(responseBody, encoding, clone);
 
-            Timber.tag(getTag(request, "Response_Result")).w(isJson(responseBody.contentType()) ? CharactorHandler.jsonFormat(bodyString) : bodyString);
+            Timber.tag(getTag(request, "Response_Result"))
+                    .w(isJson(responseBody.contentType()) ? "「 %s 」%n" + CharactorHandler.jsonFormat(bodyString) : "「 %s 」%n" + bodyString,
+                            request.url());
 
         } else {
-            Timber.tag(getTag(request, "Response_Result")).w("This result isn't parsed");
+            Timber.tag(getTag(request, "Response_Result"))
+                    .w("「 %s 」%nThis result isn't parsed",
+                            request.url());
         }
         return bodyString;
     }
 
     private String getTag(Request request, String tag) {
-        return String.format(" [%s] 「 %s 」>>> %s", request.method(), request.url().toString(), tag);
+//        return String.format(" [%s] 「 %s 」>>> %s", request.method(), request.url().toString(), tag);
+        return String.format(" [%s] >>> %s", request.method(), tag);
     }
 
     /**

@@ -4,8 +4,6 @@ import android.support.annotation.Nullable;
 
 import com.minicart.android.baselibrary.net.GlobalHttpHandler;
 import com.minicart.android.baselibrary.net.RequestInterceptor;
-import com.minicart.android.baselibrary.net.http.engine.DefaultHttpEngine;
-import com.minicart.android.baselibrary.net.http.engine.IHttpEngine;
 import com.minicart.android.baselibrary.net.image.IImageLoader;
 import com.minicart.android.baselibrary.net.image.glide.GlideImageLoader;
 
@@ -37,12 +35,6 @@ public class ClientModule {
         return new GlideImageLoader();
     }
 
-    @Singleton
-    @Provides
-    IHttpEngine provideHttpEngine(Retrofit retrofit) {
-        return new DefaultHttpEngine(retrofit);
-    }
-
     /**
      * @param builder
      * @param client
@@ -50,7 +42,7 @@ public class ClientModule {
      * @return
      * @author: jess
      * @date 8/30/16 1:15 PM
-     * @description:提供retrofit
+     * @description:提供retrofitA
      */
     @Singleton
     @Provides

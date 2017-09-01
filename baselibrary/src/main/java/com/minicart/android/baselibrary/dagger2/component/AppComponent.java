@@ -7,7 +7,6 @@ import com.minicart.android.baselibrary.dagger2.delegate.AppDelegate;
 import com.minicart.android.baselibrary.dagger2.module.AppModule;
 import com.minicart.android.baselibrary.dagger2.module.ClientModule;
 import com.minicart.android.baselibrary.dagger2.module.GlobalConfigModule;
-import com.minicart.android.baselibrary.net.http.engine.IHttpEngine;
 import com.minicart.android.baselibrary.net.http.secret.ISecret;
 import com.minicart.android.baselibrary.net.image.IImageLoader;
 import com.minicart.android.baselibrary.support.AppManager;
@@ -40,10 +39,6 @@ public interface AppComponent {
 //    Map<String, Object> extras();
 
     OkHttpClient provideClient();
-
-    Retrofit.Builder provideRetrofitBuilder();
-
-    IHttpEngine provideIHttpEngine();
 
     void inject(AppDelegate delegate);
 
