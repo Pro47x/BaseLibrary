@@ -16,6 +16,5 @@ class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         ButterKnife.bind(this, itemView)
     }
 
-    val context: Context
-        get() = itemView.context
+    fun getContext():Context = itemView.context
 }

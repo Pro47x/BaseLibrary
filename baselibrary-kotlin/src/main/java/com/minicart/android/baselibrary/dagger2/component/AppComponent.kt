@@ -21,27 +21,20 @@ import javax.inject.Singleton
 interface AppComponent {
     fun application(): Application
 
-    //图片管理器,用于加载图片的管理类,默认使用glide,使用策略模式,可替换框架
+    /**
+     * 图片管理器,用于加载图片的管理类,默认使用glide,使用策略模式,可替换框架
+     */
     fun imageLoader(): IImageLoader
 
-    //    gson
+    /**
+     *
+     */
     fun gson(): Gson
 
     val appManager: AppManager
 
-    val secret: ISecret
-
-    val baseUrl: HttpUrl
-
     //用来存取一些整个App公用的数据,切勿大量存放大容量数据
     //    Map<String, Object> extras();
 
-    fun provideClient(): OkHttpClient
-
-    fun provideRetrofitBuilder(): Retrofit.Builder
-
-    fun provideIHttpEngine(): IHttpEngine
-
     fun inject(delegate: AppDelegate)
-
 }

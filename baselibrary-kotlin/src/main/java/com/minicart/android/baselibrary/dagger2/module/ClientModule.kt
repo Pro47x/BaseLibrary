@@ -1,11 +1,13 @@
 package com.minicart.android.baselibrary.dagger2.module
 
+import android.app.Application
 import com.minicart.android.baselibrary.net.GlobalHttpHandler
 import com.minicart.android.baselibrary.net.RequestInterceptor
 import com.minicart.android.baselibrary.net.http.engine.DefaultHttpEngine
 import com.minicart.android.baselibrary.net.http.engine.IHttpEngine
 import com.minicart.android.baselibrary.net.image.IImageLoader
 import com.minicart.android.baselibrary.net.image.glide.GlideImageLoader
+import com.minicart.android.baselibrary.support.AppManager
 import dagger.Module
 import dagger.Provides
 import okhttp3.HttpUrl
@@ -33,36 +35,6 @@ class ClientModule {
     @Provides
     internal fun provideHttpEngine(retrofit: Retrofit): IHttpEngine {
         return DefaultHttpEngine(retrofit)
-    }
-
-    /**
-     * @param builder
-     * *
-     * @param client
-     * *
-     * @param httpUrl
-     * *
-     * @return
-     * *
-     * @author: jess
-     * *
-     * @date 8/30/16 1:15 PM
-     * *
-     * @description:提供retrofit
-     */
-    @Singleton
-    @Provides
-    internal fun provideRetrofit(
-            builder: Retrofit.Builder,
-            client: OkHttpClient,
-            httpUrl: HttpUrl
-    ): Retrofit {
-        builder
-                .baseUrl(httpUrl)//域名
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(client)//设置okhttp
-        return builder.build()
     }
 
     /**
@@ -106,6 +78,12 @@ class ClientModule {
     @Provides
     internal fun provideInterceptor(interceptor: RequestInterceptor): Interceptor {
         return interceptor//打印请求信息的拦截器
+    }
+
+    @Singleton
+    @Provides
+    internal fun provideAppManager(application: Application): AppManager {
+        return AppManager(application)
     }
 
     companion object {

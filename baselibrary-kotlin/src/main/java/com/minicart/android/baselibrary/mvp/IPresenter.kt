@@ -29,12 +29,4 @@ interface IPresenter<in V> {
     fun onStop()
 
     fun onDestroy()
-
-    companion object {
-
-        val SORT_TYPE = "01"
-        val PAGE_SIZE = "2000"
-        val CURRENT_PAGE = "1"
-    }
-
 }

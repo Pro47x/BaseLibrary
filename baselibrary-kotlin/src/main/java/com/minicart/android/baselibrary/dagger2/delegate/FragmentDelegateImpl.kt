@@ -34,7 +34,7 @@ class FragmentDelegateImpl : FragmentDelegate {
     }
 
     override fun onCreate(savedInstanceState: Bundle) {
-        iFragment!!.setupFragmentComponent((mFragment!!.activity.application as App).appComponent)
+        iFragment!!.setupFragmentComponent((mFragment!!.activity.application as App).getAppComponent())
     }
 
     override fun onCreateView(view: View, savedInstanceState: Bundle) {

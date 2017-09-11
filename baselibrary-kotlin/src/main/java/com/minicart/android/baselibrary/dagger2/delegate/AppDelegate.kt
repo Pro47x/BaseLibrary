@@ -35,7 +35,7 @@ class AppDelegate(private var mApplication: Application) : App {
     @Inject
     internal lateinit var mActivityLifecycle: ActivityLifecycle
 
-    private val mModule: ConfigModule = MCManifestParser(mApplication).parse<ConfigModule>(ConfigModule.MODULE_VALUE)
+    private val mModule: ConfigModule = MCManifestParser(mApplication).parse(ConfigModule.MODULE_VALUE)
 
     private lateinit var mComponentCallback: ComponentCallbacks2
 

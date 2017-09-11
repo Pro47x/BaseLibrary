@@ -26,20 +26,23 @@ class ActivityDelegateImpl : ActivityDelegate {
     }
 
     override fun onCreate(savedInstanceState: Bundle) {
-        if (mActivity is AppCompatActivity) {
-            (mActivity as AppCompatActivity).supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
+        var a1: Activity = mActivity!!
+        if (a1 is AppCompatActivity) {
+            a1.supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         } else {
-            mActivity!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            a1.requestWindowFeature(Window.FEATURE_NO_TITLE)
         }
-        iActivity!!.setupActivityComponent((mActivity!!.application as App).appComponent)//依赖注入
+        var a2: IActivity<*> = iActivity!!
+
+        a2.setupActivityComponent((a1.application as App).getAppComponent())//依赖注入
         try {
-            val layoutResID = iActivity!!.initRootLayoutID(savedInstanceState)
+            val layoutResID = a2.initRootLayoutID(savedInstanceState)
             if (layoutResID != 0) {
-                mActivity!!.setContentView(layoutResID)
-                mUnbinder = ButterKnife.bind(mActivity!!)
-                iActivity!!.initView(savedInstanceState)
-                iActivity!!.initData(savedInstanceState)
-                iActivity!!.initListener(savedInstanceState)
+                a1.setContentView(layoutResID)
+                mUnbinder = ButterKnife.bind(a1)
+                a2.initView(savedInstanceState)
+                a2.initData(savedInstanceState)
+                a2.initListener(savedInstanceState)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -87,7 +90,7 @@ class ActivityDelegateImpl : ActivityDelegate {
 
     protected constructor(parcel: Parcel) {
         this.mActivity = parcel.readParcelable<Parcelable>(Activity::class.java.classLoader) as Activity
-        this.iActivity = parcel.readParcelable<Parcelable>(IActivity::class.java.classLoader) as IActivity <*>
+        this.iActivity = parcel.readParcelable<Parcelable>(IActivity::class.java.classLoader) as IActivity<*>
         this.mUnbinder = parcel.readParcelable<Parcelable>(Unbinder::class.java.classLoader) as Unbinder
     }
 
