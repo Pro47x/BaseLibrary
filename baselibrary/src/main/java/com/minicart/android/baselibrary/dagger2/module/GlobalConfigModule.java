@@ -20,19 +20,19 @@ public class GlobalConfigModule {
     private HttpUrl mBaseUrl;
     private GlobalHttpHandler mHandler;
     private ISecret mISecret;
+    private int appCommonConfig;
 
     private GlobalConfigModule(Builder builder) {
         this.mBaseUrl = builder.baseUrl;
         this.mHandler = builder.handler;
         this.mISecret = builder.ISecret;
+        this.appCommonConfig = builder.appCommonConfig;
     }
 
     @Singleton
     @Provides
+    @Nullable
     HttpUrl provideHttpUrl() {
-        if (mBaseUrl == null) {
-            throw new IllegalArgumentException("baseUrl can not Null!!!");
-        }
         return mBaseUrl;
     }
 
@@ -49,6 +49,12 @@ public class GlobalConfigModule {
         return mISecret;//处理Http请求和响应结果
     }
 
+    @Singleton
+    @Provides
+    int provideAppCommonConfig() {
+        return appCommonConfig;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -57,6 +63,7 @@ public class GlobalConfigModule {
         private HttpUrl baseUrl;
         private GlobalHttpHandler handler;
         private ISecret ISecret;
+        private int appCommonConfig;
 
         private Builder() {
         }
@@ -76,6 +83,11 @@ public class GlobalConfigModule {
 
         public Builder setSecret(ISecret secret) {//用来处理http响应结果
             this.ISecret = secret;
+            return this;
+        }
+
+        public Builder setAppCommonConfig(int appCommonConfig) {//用来处理http响应结果
+            this.appCommonConfig = appCommonConfig;
             return this;
         }
 

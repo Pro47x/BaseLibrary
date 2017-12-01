@@ -1,11 +1,6 @@
 package com.minicart.android.baselibrary.net.http.engine;
 
 
-import com.minicart.android.baselibrary.support.EmptyUtil;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -23,38 +18,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * 版本：
  */
 @Singleton
-public class DefaultHttpEngine implements IHttpEngine{
+public class DefaultHttpEngine<Service> implements IHttpEngine<Service> {
     private static final String TAG = "DefaultHttpEngine";
-    private final Retrofit mRetrofit;
-    private final Map<String, Object> mRetrofitServiceCache = new LinkedHashMap<>();
+    private final Service mService;
 
-    @Inject
-    public DefaultHttpEngine(OkHttpClient client, HttpUrl baseUrl) {
-        mRetrofit = new Retrofit.Builder()
+    public DefaultHttpEngine(OkHttpClient client, HttpUrl baseUrl, Class<Service> clazz) {
+        mService = new Retrofit.Builder()
                 .baseUrl(baseUrl)//域名
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
-                .build();
+                .build()
+                .create(clazz);
     }
 
     @Override
-    public void injectRetrofitService(Class<?>... services) {
-        for (Class<?> service : services) {
-            if (mRetrofitServiceCache.containsKey(service.getName())) {
-                continue;
-            }
-            mRetrofitServiceCache.put(service.getName(), mRetrofit.create(service));
-        }
-    }
-
-    @Override
-    public <T> T obtainRetrofitService(Class<T> service) {
-        if (mRetrofitServiceCache.containsKey(service.getName())) {
-            return (T) mRetrofitServiceCache.get(service.getName());
-        } else {
-            injectRetrofitService(service);
-            return obtainRetrofitService(service);
-        }
+    public Service getService() {
+        return mService;
     }
 }

@@ -33,12 +33,12 @@ public interface AppComponent {
 
     ISecret getSecret();
 
-    HttpUrl getBaseUrl();
-
     //用来存取一些整个App公用的数据,切勿大量存放大容量数据
 //    Map<String, Object> extras();
 
     OkHttpClient provideClient();
+
+    int provideAppCommonConfig();
 
     void inject(AppDelegate delegate);
 

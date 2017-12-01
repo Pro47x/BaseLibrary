@@ -18,6 +18,8 @@ import java.util.List;
 
 public interface ConfigModule {
     String MODULE_VALUE = "ConfigModule";
+    int CONFIG_LOCK_STATUS_BAR = 1 << 0;
+    int CONFIG_NO_SUPPORT_SELL_ORDER_TYPE_INPUT_AMOUNT = 1 << 1;
 
     /**
      * 使用{@link GlobalConfigModule.Builder}给框架配置一些配置参数
